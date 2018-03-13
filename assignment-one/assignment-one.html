@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>read more expand collapse</title>
+	<link rel="stylesheet" href="css/common.css">
+</head>
+<body>
+	<div class="article">
+		<div class="text short"></div>
+		<div class="text full">
+    		Okay, I've beTen spending all day trying to figure out the right approach for this, but have come out short, so maybe someone here can point me in the right direction.
+
+			Problem: I have a div with class "article-content". There will be around 2-10 of these on the page. Each of them will contain output from a wysiwyg. i.e. texts wrapped in p-tags, some strong tags, em tags and even img tags.
+
+			I need to create a preview/excerpt version of these that wont show the images and will append a [...] to the end of x characters + a "read more" link. When this is clicked the full article will be shown including images.
+
+			Ive seen the following appraches:
+
+			Strip the content of the div after x characters and add [...] + link. This makes the content a bit fragile since it can strip end tags, and even strip the middle of an image tag resulting in broken html being outputtet.
+
+			Change the height on content element, and overflow:hidden;. This could result in an image overflowing out of the box - with parts of it inside, and even cut a line in half depending on the line-height vs. the content height. this makes the js very css dependant.
+
+			Create new content element with the first x characters and toggle display none/block on the short version and long version. This creates 2 instances of the text in the markup, which i would prefer. This would also make it impossible to take advantage of css transitions for the height when the elements expands.
+
+			I find it a little strange that i havent been able to find a bullet proof plugin for this supposedly simple - and much used - task. But maybe im just missing something. Maybe im google for the wrong terms. what is this thing offically called ? toggle expand? read-more-read-less? show more?
+
+			What would be considered the best approach? and is there a way to get around all these problems?
+
+			Thank you for your time
+		</div>
+		    <span class="read-more">+</span>
+	</div>
+	<div class="article">
+	    <div class="text short"></div>
+	    <div class="text full">
+	        Okay, I've been spending all day trying to figure out the right approach for this, but have come out short, so maybe someone here can point me in the right direction.
+
+			Problem: I have a div with class "article-content". There will be around 2-10 of these on the page. Each of them will contain output from a wysiwyg. i.e. texts wrapped in p-tags, some strong tags, em tags and even img tags.
+
+			I need to create a preview/excerpt version of these that wont show the images and will append a [...] to the end of x characters + a "read more" link. When this is clicked the full article will be shown including images.
+
+			Ive seen the following appraches:
+
+			Strip the content of the div after x characters and add [...] + link. This makes the content a bit fragile since it can strip end tags, and even strip the middle of an image tag resulting in broken html being outputtet.
+
+			Change the height on content element, and overflow:hidden;. This could result in an image overflowing out of the box - with parts of it inside, and even cut a line in half depending on the line-height vs. the content height. this makes the js very css dependant.
+
+			Create new content element with the first x characters and toggle display none/block on the short version and long version. This creates 2 instances of the text in the markup, which i would prefer. This would also make it impossible to take advantage of css transitions for the height when the elements expands.
+
+			I find it a little strange that i havent been able to find a bullet proof plugin for this supposedly simple - and much used - task. But maybe im just missing something. Maybe im google for the wrong terms. what is this thing offically called ? toggle expand? read-more-read-less? show more?
+
+			What would be considered the best approach? and is there a way to get around all these problems?
+
+			Thank you for your time
+		</div>
+	    <span class="read-more">+</span>
+	</div>
+	<script type="text/javascript" src='js/jquery-1.12.0.min.js'></script>
+	<script type="text/javascript">
+			$(document).ready(function(){    
+			    var maxChars = 520;
+			    var ellipsis = "...";
+			    $(".article").each(function() {
+			        var text = $(this).find(".text.full").text();
+			        var html = $(this).find(".text.full").html();        
+			        if(text.length > maxChars)
+			        {            
+			            var shortHtml = html.substring(0, maxChars - 3) + "<span class='ellipsis'>" + ellipsis + "</span>";
+			            $(this).find(".text.short").html(shortHtml);            
+			        }
+			    });
+			    $(".read-more").click(function(){        
+			        var readMoreText = "+";
+			        var readLessText = "-";        
+			        var $shortElem = $(this).parent().find(".text.short");
+			        var $fullElem = $(this).parent().find(".text.full");        
+			        
+			        if($shortElem.is(":visible"))
+			        {           
+			            $shortElem.hide();
+			            $fullElem.show();
+			            $(this).text(readLessText);
+			        }
+			        else
+			        {
+			            $shortElem.show();
+			            $fullElem.hide();
+			            $(this).text(readMoreText);
+			        }       
+			    });
+			});		
+	</script>
+</body>
+</html>
